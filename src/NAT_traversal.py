@@ -1,44 +1,64 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
-from minimal import *
+
+import argparse
+import sounddevice as sd
+import numpy as np
+import socket
+import time
+import psutil
+import math
+import struct
+import threading
+import minimal
+import soundfile as sf
+import logging
 import stun
+from collections import Counter
 
-def get_external_endpoint():
-    nat_type, external_ip, external_port = stun.get_ip_info(stun_host='stun.l.google.com')
-    return nat_type, external_ip, external_port
+def leer_fichero():
+  fichero = open("public-stun-list.txt")
+  servidores = fichero.readlines()
+  #print(len(servidores))
+  ip=servidores[0][0:servidores[0].find(":")]
+  #print(ip)
+  fichero.close()
+  return servidores
 
-nat_type, external_ip, external_port = get_external_endpoint()
+serv = leer_fichero()
+M=[[1,2,3]]
+for x in range(0, 15):
+    direccion=serv[x][0:serv[x].find(":")]
+    #print(direccion)
+    nat_type, external_ip, external_port = stun.get_ip_info(stun_host=direccion)
+    if external_ip is not None:
+     M.append([external_ip, external_port, nat_type])
+     #print(M[len(M)-1])
+     #print(external_ip, external_port, nat_type, sep="\t")
+     #print(external_port)
+     #print(nat_type)
 
-if nat_type is not None:
- print(external_ip)
- print(external_port)
+IPs=[fila[0] for fila in M]
+puertos=[fila[1] for fila in M]
+tipo=[fila[2] for fila in M]
+print(IPs)
+print(puertos)
+print(tipo)
+counter1 = Counter(IPs)
+counter2 = Counter(puertos)
+counter3 = Counter(tipo)
+a, *extra1 = counter1.most_common()
+b, *extra2= counter2.most_common()
+c, *extra3= counter3.most_common()
 
-def get_external_endpoint():
-   nat_type, external_ip, external_port = stun.get_ip_info(stun_host='stun.12connect.com')
-   return nat_type, external_ip, external_port
+if b[1] != len(puertos):
+ print("Nat Simetrica, no se puede ejecutar")
+else:
+  print("La NAT no es simetrica")
+  print("Tu IP y puerto son:")
+  print(a[0])
+  print(b[0])
 
-nat_type, external_ip, external_port = get_external_endpoint()
-
-if nat_type is not None:
- print(external_ip)
- print(external_port)
-
-def get_external_endpoint():
-    nat_type, external_ip, external_port = stun.get_ip_info(stun_host='stun.12voip.com')
-    return nat_type, external_ip, external_port
-
-nat_type, external_ip, external_port = get_external_endpoint()
-
-if nat_type is not None:
- print(external_ip)
- print(external_port)
-
- def get_external_endpoint():
-    nat_type, external_ip, external_port = stun.get_ip_info(stun_host='stun.voippro.com')
-    return nat_type, external_ip, external_port
-
-nat_type, external_ip, external_port = get_external_endpoint()
-
-if nat_type is not None:
- print(external_ip)
- print(external_port)
+#print(a)
+#print(b)
+#print(c)
