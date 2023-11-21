@@ -33,7 +33,7 @@ for x in range(0, 15):
     nat_type, external_ip, external_port = stun.get_ip_info(stun_host=direccion)
     if external_ip is not None:
      M.append([external_ip, external_port, nat_type])
-     #print(M[len(M)-1])
+     print(M[len(M)-1])
      #print(external_ip, external_port, nat_type, sep="\t")
      #print(external_port)
      #print(nat_type)
@@ -51,7 +51,7 @@ a, *extra1 = counter1.most_common()
 b, *extra2= counter2.most_common()
 c, *extra3= counter3.most_common()
 
-if b[1] != len(puertos):
+if b[1] != len(puertos)-1:
  print("Nat Simetrica, no se puede ejecutar")
 else:
   print("La NAT no es simetrica")
