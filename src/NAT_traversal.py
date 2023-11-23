@@ -28,13 +28,13 @@ def leer_fichero():
 def get_nat():
   serv = leer_fichero()
   M=[[1,2,3]]
-  for x in range(5, 10):
+  for x in range(0, 15):
       direccion=serv[x][0:serv[x].find(":")]
       #print(direccion)
       nat_type, external_ip, external_port = stun.get_ip_info(stun_host=direccion)
       if external_ip is not None:
        M.append([external_ip, external_port, nat_type])
-       print(M[len(M)-1])
+       #print(M[len(M)-1])
       #print(external_ip, external_port, nat_type, sep="\t")
       #print(external_port)
       #print(nat_type)
@@ -58,7 +58,7 @@ def get_nat():
    print("La NAT no es simetrica")
    print(f"Tu IP y puerto son: {a[0]}, {b[0]}")
 
-print("Obteniendo tu tipo de NAT")
+print("Obteniendo tu tipo de NAT...")
 get_nat()
 result=input("Quieres ejecutar intercom? [y/n]: ")
 if result=="y":
