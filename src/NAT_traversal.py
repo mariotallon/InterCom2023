@@ -28,7 +28,7 @@ def leer_fichero():
 def get_nat():
   serv = leer_fichero()
   M=[[1,2,3]]
-  for x in range(0, 15):
+  for x in range(0, 1):
       direccion=serv[x][0:serv[x].find(":")]
       #print(direccion)
       nat_type, external_ip, external_port = stun.get_ip_info(stun_host=direccion)
@@ -65,10 +65,11 @@ if result=="y":
  print("Ejecutando intercom")
  ip_dest=input("Introduce la IP de destino (en blanco para usar localhost): ")
  port_dest=input("Introduce el puerto de destino (en blanco para usar 4444): ")
+ port_list=input("Introduce el puerto en el que estarás escuchando (en blanco para usar 4444): ")
  if(port_dest != ""):
   port_dest=int(port_dest)
-
- minimal.parser.add_argument("-b", "--buffering_time", type=int, default=150, help="Miliseconds to buffer")
+ if(port_list != ""):
+  port_list=int(port_list)
 
  try:
     import argcomplete  # <tab> completion for argparse.
@@ -88,6 +89,9 @@ if result=="y":
        minimal.args.destination_address=ip_dest
      if(port_dest != ""):
        minimal.args.destination_port=port_dest
+     
+     if(port_list != ""):
+       minimal.args.listening_port=port_list
     
      if minimal.args.list_devices:
          print("Available devices:")
